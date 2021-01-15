@@ -1,0 +1,59 @@
+{
+	"info": {
+		"_postman_id": "b61af735-9cf6-45c0-b66e-248054e17844",
+		"name": "Runner Variables Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Runner Variables Test",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "7d694e89-0aa4-4878-99be-601ed744155a",
+						"exec": [
+							"pm.test('variables should not exist before run', function () {",
+							"    pm.expect(pm.globals.get('globalVar')).to.not.exist;",
+							"    pm.expect(pm.environment.get('envVar')).to.not.exist;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4dbeb22-d3b1-4e46-a2d5-d5b7071c0760",
+						"exec": [
+							"pm.globals.set('globalVar', 'global');",
+							"pm.environment.set('envVar', 'environment');",
+							"",
+							"pm.test('variables should be updated', function () {",
+							"    pm.expect(pm.globals.get('globalVar')).to.equal('global');",
+							"    pm.expect(pm.environment.get('envVar')).to.equal('environment')",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "postman-echo.com/get",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

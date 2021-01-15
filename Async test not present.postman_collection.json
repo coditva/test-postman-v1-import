@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "993c9b61-25e2-460b-b1cd-5f6c89eba8a3",
+		"name": "Async test not present",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Test cookies",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8952a14f-4346-4bad-8e59-71cf67adf8f1",
+						"exec": [
+							"const jar = pm.cookies.jar();",
+							"",
+							"pm.test('Cookie foo1 is not set before request', (done) => {",
+							"    jar.get(pm.request.url, 'foo1', (err, cookie) => {",
+							"        if (err) {",
+							"            return done(err);",
+							"        }",
+							"        try {",
+							"        pm.expect(cookie).to.not.exist;",
+							"        return done();",
+							"        } catch (e) {",
+							"            return done(e);",
+							"        }",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "aae3d7db-bd05-4eb3-81aa-862ef5b92101",
+						"exec": [
+							"const jar = pm.cookies.jar();",
+							"",
+							"pm.test('Cookie foo1 is set after request', function (done) {",
+							"    jar.get(pm.request.url, 'foo1', function (err, cookie) {",
+							"        if (err) {",
+							"            return done(err);",
+							"        }",
+							"",
+							"        pm.expect(cookie).to.exist.and.equal('bar1');",
+							"        return done();",
+							"    });",
+							"});",
+							"",
+							"pm.test('Cookie access should be denied', function (done) {",
+							"    jar.get('somerandom.url', 'foo', function (err, cookie) {",
+							"        console.log('heyo');",
+							"        try {",
+							"            pm.expect(err).to.exist;",
+							"            pm.expect(cookie).to.not.exist;",
+							"            console.log('ssup');",
+							"            return done();",
+							"        } catch (e) {",
+							"            console.log('no');",
+							"            return done(e);",
+							"        }",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://postman-echo.com/cookies/set?foo1=bar1&foo2=bar2",
+					"protocol": "https",
+					"host": [
+						"postman-echo",
+						"com"
+					],
+					"path": [
+						"cookies",
+						"set"
+					],
+					"query": [
+						{
+							"key": "foo1",
+							"value": "bar1"
+						},
+						{
+							"key": "foo2",
+							"value": "bar2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
